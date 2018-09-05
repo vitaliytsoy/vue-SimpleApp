@@ -9,10 +9,10 @@
         <!--<th v-on:click="setOperationsSortedBy('assessment')">Качество</th>-->
         <!--</tr>-->
         <tr>
-            <th v-on:click="setOperationsSortedBy({type: 'date', isIncremental: !operationsSortedBy.isIncremental})">Дата</th>
-            <th v-on:click="setOperationsSortedBy({type: 'type', isIncremental: !operationsSortedBy.isIncremental})">Операция</th>
-            <th v-on:click="setOperationsSortedBy({type: 'area', isIncremental: !operationsSortedBy.isIncremental})">Площадь</th>
-            <th v-on:click="setOperationsSortedBy({type: 'assessment', isIncremental: !operationsSortedBy.isIncremental})">Качество</th>
+            <th v-on:click="setOperationsSortedBy('date')">Дата</th>
+            <th v-on:click="setOperationsSortedBy('type')">Операция</th>
+            <th v-on:click="setOperationsSortedBy('area')">Площадь</th>
+            <th v-on:click="setOperationsSortedBy('assessment')">Качество</th>
         </tr>
         <tr v-for="operation in operationsToShow" v-bind:key="operation.id">
             <td>{{ getFormattedDate(operation.date) }}</td>

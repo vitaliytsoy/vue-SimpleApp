@@ -31,7 +31,11 @@ export default new Vuex.Store({
             };
         },
         setOperationsSortedBy(state, sortType) {
-            state.operations.sortBy = {type: sortType.type, isIncremental: sortType.isIncremental};
+            if(state.operations.sortBy.type.toLowerCase() === sortType.toLowerCase()) {
+                state.operations.sortBy = { type: state.operations.sortBy.type, isIncremental: !state.operations.sortBy.isIncremental }
+            } else {
+                state.operations.sortBy = { type: sortType, isIncremental: state.operations.sortBy.isIncremental }
+            }
         },
     },
     actions: {
