@@ -31,17 +31,25 @@ export default new Vuex.Store({
             };
         },
         setOperationsSortedBy(state, sortType) {
-            state.operations.sortBy = { type: sortType.type, isIncremental: sortType.isIncremental };
+            state.operations.sortBy = {type: sortType.type, isIncremental: sortType.isIncremental};
         },
     },
     actions: {
         async getOperations(store) {
             const fieldService = new FieldService();
             const plannedOperations = await fieldService.getOperations();
-            const doneOperations = await fieldService.getOperations();
+            const doneOperations = await fieldService.getOperations_2();
 
             store.commit('setPlannedOperations', plannedOperations);
             store.commit('setDoneOperations', doneOperations);
         },
+    },
+    getters: {
+        plannedOperations: state => {
+            return state.operations.planned;
+        },
+        doneOperations: state => {
+            return state.operations.done;
+        }
     },
 });

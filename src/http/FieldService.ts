@@ -51,6 +51,56 @@ export default class FieldService {
             assessment: null
         })
     ];
+    private operations_2: Array<Operation> = [
+        new Operation({
+            id: 'f112-oo0',
+            type: OperationType.WATERING,
+            date: { year: 2018, month: 3, day: 12 },
+            area: 45.7,
+            comment: 'Отлично вспахали',
+            assessment: Assessment.EXCELLENT
+        }),
+        new Operation({
+            id: 'f112-oo1',
+            type: OperationType.PLOWING,
+            date: { year: 2018, month: 3, day: 14 },
+            area: 49.2,
+            comment: 'Все прошло нормально',
+            assessment: Assessment.SATISFACTORILY
+        }),
+        new Operation({
+            id: 'f112-oo2',
+            type: OperationType.FERTILIZATION,
+            date: { year: 2018, month: 3, day: 17 },
+            area: 50.1,
+            comment: null,
+            assessment: Assessment.SATISFACTORILY
+        }),
+        new Operation({
+            id: 'f112-oo3',
+            type: OperationType.FERTILIZATION,
+            date: { year: 2018, month: 3, day: 26 },
+            area: 41.1,
+            comment: null,
+            assessment: null
+        }),
+        new Operation({
+            id: 'f112-oo4',
+            type: OperationType.PLOWING,
+            date: { year: 2018, month: 4, day: 2 },
+            area: 40.4,
+            comment: 'Знатно полили',
+            assessment: Assessment.EXCELLENT
+        }),
+        new Operation({
+            id: 'f112-oo5',
+            type: OperationType.FERTILIZATION,
+            date: { year: 2018, month: 6, day: 20 },
+            area: 48.0,
+            comment: null,
+            assessment: null
+        })
+    ];
 
     /**
      * Имитирует получение истории операций по тестовому полю 112
@@ -60,6 +110,18 @@ export default class FieldService {
         return new Promise(resolve => {
             setTimeout(() => {
                 const clonedOperations = this.operations.map(operation => operation);
+                resolve(clonedOperations);
+            }, 10);
+        });
+    }
+    /**
+     * Имитирует получение истории операций по тестовому полю 112
+     * @returns {Promise<Array<Operation>>}
+     */
+    getOperations_2 (): Promise<Array<Operation>> {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                const clonedOperations = this.operations_2.map(operation => operation);
                 resolve(clonedOperations);
             }, 10);
         });
