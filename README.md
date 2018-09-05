@@ -1,4 +1,6 @@
-# test
+# Vue-SimpleApp
+This is simple Vue app with use of fake API. \
+Used: `vuex` `vue-router` `typescript`
 
 ## Project setup
 ```
