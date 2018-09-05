@@ -3,8 +3,18 @@
         <div class="container container-operations">
             <h2 class="">Операции на поле 112</h2>
             <div class="operations__toggle">
-                <div class="operations__toggle__item" v-on:click="toggleOperationsType('planned')">Запланированные операции</div>
-                <div class="operations__toggle__item" v-on:click="toggleOperationsType('done')">Выполненные операции</div>
+                <div class="operations__toggle__item"
+                     v-bind:class="{isActive: isPlannedShown}"
+                     v-on:click="toggleOperationsType('planned')"
+                >
+                    Запланированные операции
+                </div>
+                <div class="operations__toggle__item"
+                     v-bind:class="{isActive: !isPlannedShown}"
+                     v-on:click="toggleOperationsType('done')"
+                >
+                    Выполненные операции
+                </div>
             </div>
             <v-operations-table v-if="isPlannedShown" :operations="plannedOperations"></v-operations-table>
             <v-operations-table v-else :operations="doneOperations"></v-operations-table>
@@ -13,8 +23,8 @@
 </template>
 
 <script>
-  import { mapMutations, mapActions, mapGetters } from 'vuex';
-  import OperationsTable from './OperationsTable';
+  import { mapMutations, mapActions } from 'vuex';
+  import OperationsTable from './OperationsTable.vue';
 
   export default {
     name: 'Operations',
@@ -47,10 +57,6 @@
       ...mapActions([
         'getOperations',
       ]),
-      // ...mapGetters([
-      //   'plannedOperations',
-      //   'doneOperations',
-      // ]),
       toggleOperationsType(toggleTo) {
         toggleTo === 'planned' && !this.isPlannedShown ? this.isPlannedShown = !this.isPlannedShown : '';
         toggleTo === 'done' && this.isPlannedShown ? this.isPlannedShown = !this.isPlannedShown : '';
@@ -72,147 +78,11 @@
             font-size: 12px;
             margin-top: 40px;
             &__item {
+                &.isActive {
+                    color: #3399FF;
+                }
                 &:not(:first-child) {
                     padding-left: 30px;
-                }
-            }
-        }
-        &__table {
-            width: 96%;
-            margin: 30px 0 20px 0;
-            tr {
-                color: #333333;
-                letter-spacing: -0.52px;
-                height: 40px;
-                font-size: 14px;
-                &:not(:first-child) {
-                    td {
-                        border-bottom: 1px solid #EDEEEE;
-                    }
-                }
-                &:first-child {
-                    background: #EDEEEE;
-                    font-size: 13px;
-                    th {
-                        text-align: left;
-                        padding: 15px 15px;
-                        cursor: pointer;
-                        &:nth-child(1) {
-                            width: 12%;
-                            &:after {
-                                content: '';
-                                display: inline-block;
-                                width: 0;
-                                height: 0;
-                                margin: 0 0 2px 5px;
-                                border-left: 5px solid transparent;
-                                border-right: 5px solid transparent;
-                                border-top: 5px solid #3399FF;
-                            }
-                        }
-                        &:nth-child(2) {
-                            width: 38%;
-                            &:after {
-                                content: '';
-                                display: inline-block;
-                                width: 0;
-                                height: 0;
-                                margin: 0 0 2px 5px;
-                                border-left: 5px solid transparent;
-                                border-right: 5px solid transparent;
-                                border-top: 5px solid #A7A9AC;
-                            }
-                        }
-                        &:nth-child(3) {
-                            width: 20%;
-                            &:after {
-                                content: '';
-                                display: inline-block;
-                                width: 0;
-                                height: 0;
-                                margin: 0 0 2px 5px;
-                                border-left: 5px solid transparent;
-                                border-right: 5px solid transparent;
-                                border-top: 5px solid #A7A9AC;
-                            }
-                        }
-                        &:nth-child(4) {
-                            width: 20%;
-                            &:after {
-                                content: '';
-                                display: inline-block;
-                                width: 0;
-                                height: 0;
-                                margin: 0 0 2px 5px;
-                                border-left: 5px solid transparent;
-                                border-right: 5px solid transparent;
-                                border-top: 5px solid #A7A9AC;
-                            }
-                        }
-                    }
-                }
-                td {
-                    position: relative;
-                    padding: 20px 15px;
-                    &:nth-child(1) {
-                        font-size: 12px;
-                        opacity: 0.8;
-                    }
-                    &:nth-child(3) {
-                        padding-left: 60px;
-                        &:before {
-                            content: '';
-                            display: inline-block;
-                            width: 40px;
-                            height: 40px;
-                            position: absolute;
-                            top: 50%;
-                            left: 15px;
-                            transform: translateY(-50%);
-                            background: url("../assets/crop-wheat.png") 0 0 / 100% auto no-repeat;
-                        }
-                    }
-                    &:nth-child(4) {
-                        &:before {
-                            content: '';
-                            display: inline-block;
-                            width: 25px;
-                            height: 15px;
-                            position: relative;
-                            top: 3px;
-                            margin-right: 10px;
-                            border-radius: 10px;
-                            background: #66CC66;
-                        }
-                        .green {
-
-                        }
-                        .red {
-
-                        }
-                    }
-                    &.assessment {
-                        &-green {
-                            &:before {
-                                background: #66CC66;
-                            }
-                        }
-                        &-red {
-                            &:before {
-                                background: #FF7360;
-                            }
-                        }
-                        &-yellow {
-                            &:before {
-                                background: #FFE06D;
-                            }
-                        }
-                        &-gray {
-                            &:before {
-                                background: #EDEEEE;
-                            }
-                        }
-                    }
                 }
             }
         }

@@ -13,12 +13,6 @@
             <th>Площадь</th>
             <th>Качество</th>
         </tr>
-        <tr>
-            <td>5 ИЮН 2018</td>
-            <td>Боронование зяби и паров</td>
-            <td>41.4</td>
-            <td>Отлично</td>
-        </tr>
         <tr v-for="operation in operationsToShow" v-bind:key="operation.id">
             <td>{{ getFormattedDate(operation.date) }}</td>
             <td>{{ operation.type }}</td>
@@ -85,6 +79,7 @@
           item.date = new Date(item.date.year, item.date.month, item.date.day);
           item.type = this.$data.types[item.type];
           item.assessment = this.$data.assessments[item.assessment];
+          // Check if value exist
           if (item.type == null) item.type = 'Неизвестная операция';
           if (item.assessment == null) item.assessment = this.$data.assessments[3];
           return item;

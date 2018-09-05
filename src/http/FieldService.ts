@@ -58,7 +58,7 @@ export default class FieldService {
             date: { year: 2018, month: 3, day: 12 },
             area: 45.7,
             comment: 'Отлично вспахали',
-            assessment: Assessment.EXCELLENT
+            assessment: Assessment.BADLY
         }),
         new Operation({
             id: 'f112-oo1',
@@ -66,7 +66,7 @@ export default class FieldService {
             date: { year: 2018, month: 3, day: 14 },
             area: 49.2,
             comment: 'Все прошло нормально',
-            assessment: Assessment.SATISFACTORILY
+            assessment: Assessment.EXCELLENT
         }),
         new Operation({
             id: 'f112-oo2',
