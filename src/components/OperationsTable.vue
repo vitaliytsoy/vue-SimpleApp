@@ -40,13 +40,13 @@
 
 <script>
   import { mapMutations } from 'vuex';
-  import _ from "lodash";
+  import _ from 'lodash';
 
   export default {
     props: {
       operations: Array,
     },
-    name: "OperationsTable",
+    name: 'OperationsTable',
     data() {
       return {
         types: {
@@ -55,7 +55,7 @@
           2: 'Протравливание семян',
           3: 'Авиаобработка',
           4: 'Остальное',
-          5: 'Сбор урожая'
+          5: 'Сбор урожая',
         },
         assessments: {
           0: 'Плохо',
@@ -63,23 +63,19 @@
           2: 'Отлично',
           3: 'Нет оценки',
         },
-        deepClonedOperations: [],
       };
     },
     computed: {
       operationsToShow() {
-        this.$data.deepClonedOperations = _.cloneDeep(this.operations);
-        this.mapToValues(this.$data.deepClonedOperations);
-        console.log(this.$data.deepClonedOperations);
-
-        this.$data.deepClonedOperations.sort((a, b) => {
-          let sortType = this.$store.state.operations.sortBy.type.toLowerCase();
-          let isIncremental = this.$store.state.operations.sortBy.isIncremental;
-          function moreOrLess(sortBy, isIncremental) {
-            if (isIncremental) return a[sortBy] < b[sortBy];
-            if (!isIncremental) return a[sortBy] > b[sortBy];
+        let deepClonedOperations = _.cloneDeep(this.operations);
+        this.mapToValues(deepClonedOperations);
+        deepClonedOperations.sort((a, b) => {
+          const sortType = this.$store.state.operations.sortBy.type.toLowerCase();
+          const isIncremental = this.$store.state.operations.sortBy.isIncremental;
+          function moreOrLess(sortBy, isFromSmallToBig) { // eslint-disable-line consistent-return
+            if (isFromSmallToBig) return a[sortBy] < b[sortBy];
+            if (!isFromSmallToBig) return a[sortBy] > b[sortBy];
           }
-
           switch (sortType.toLowerCase()) {
             case 'date':
               return moreOrLess('date', isIncremental);
@@ -93,16 +89,12 @@
               return moreOrLess('date', isIncremental);
           }
         });
-        return this.$data.deepClonedOperations;
+        return deepClonedOperations;
       },
       operationsSortedBy() {
         console.log(this.$store.state.operations.sortBy);
         return this.$store.state.operations.sortBy;
       },
-      // sortedOperations() {
-      //   let newArray = this.operationsToShow();
-      //   return 1;
-      // },
     },
     methods: {
       ...mapMutations([
@@ -124,7 +116,7 @@
         return date.toLocaleString('ru-RU', {
           year: 'numeric',
           day: '2-digit',
-          month: 'short'
+          month: 'short',
         }).toUpperCase().replace(new RegExp('\\.|Г.', 'g'), '');
       },
     },
