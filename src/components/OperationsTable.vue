@@ -1,11 +1,17 @@
 <template>
 
     <table class="operations__table" cellspacing="0">
+        <!--<tr>-->
+        <!--<th v-on:click="setOperationsSortedBy('date')">Дата</th>-->
+        <!--<th v-on:click="setOperationsSortedBy('type')">Операция</th>-->
+        <!--<th v-on:click="setOperationsSortedBy('area')">Площадь</th>-->
+        <!--<th v-on:click="setOperationsSortedBy('assessment')">Качество</th>-->
+        <!--</tr>-->
         <tr>
-            <th v-on:click="setOperationsSortedBy('date')">Дата</th>
-            <th v-on:click="setOperationsSortedBy('type')">Операция</th>
-            <th v-on:click="setOperationsSortedBy('area')">Площадь</th>
-            <th v-on:click="setOperationsSortedBy('assessment')">Качество</th>
+            <th>Дата</th>
+            <th>Операция</th>
+            <th>Площадь</th>
+            <th>Качество</th>
         </tr>
         <tr>
             <td>5 ИЮН 2018</td>
@@ -13,31 +19,33 @@
             <td>41.4</td>
             <td>Отлично</td>
         </tr>
-        <!--<tr v-for="operation in sortedOperations" v-bind:key="operation.id">-->
-            <!--<td>{{ getFormattedDate(operation.date) }}</td>-->
-            <!--<td>{{ operation.type }}</td>-->
-            <!--<td>{{ operation.area }}</td>-->
+        <tr v-for="operation in operationsToShow" v-bind:key="operation.id">
+            <td>{{ getFormattedDate(operation.date) }}</td>
+            <td>{{ operation.type }}</td>
+            <td>{{ operation.area }}</td>
             <!--<td class="assessment-red"-->
-                <!--v-if="operation.assessment.toLowerCase() === 'плохо'">-->
-                <!--{{ operation.assessment }}-->
+            <!--v-if="operation.assessment.toLowerCase() === 'плохо'">-->
+            <!--{{ operation.assessment }}-->
             <!--</td>-->
             <!--<td class="assessment-yellow"-->
-                <!--v-else-if="operation.assessment.toLowerCase() === 'удволетворительно'">-->
-                <!--{{ operation.assessment }}-->
+            <!--v-else-if="operation.assessment.toLowerCase() === 'удволетворительно'">-->
+            <!--{{ operation.assessment }}-->
             <!--</td>-->
             <!--<td class="assessment-green"-->
-                <!--v-else-if="operation.assessment.toLowerCase() === 'отлично'">-->
-                <!--{{ operation.assessment }}-->
+            <!--v-else-if="operation.assessment.toLowerCase() === 'отлично'">-->
+            <!--{{ operation.assessment }}-->
             <!--</td>-->
             <!--<td class="assessment-gray"-->
-                <!--v-else-if="operation.assessment.toLowerCase() === 'нет оценки'">-->
-                <!--{{ operation.assessment }}-->
+            <!--v-else-if="operation.assessment.toLowerCase() === 'нет оценки'">-->
+            <!--{{ operation.assessment }}-->
             <!--</td>-->
-        <!--</tr>-->
+        </tr>
     </table>
 </template>
 
 <script>
+  import _ from "lodash";
+
   export default {
     props: {
       operations: Array,
@@ -51,6 +59,7 @@
           2: 'Протравливание семян',
           3: 'Авиаобработка',
           4: 'Остальное',
+          5: 'Сбор урожая'
         },
         assessments: {
           0: 'Плохо',
@@ -58,34 +67,36 @@
           2: 'Отлично',
           3: 'Нет оценки',
         },
+        deepCloneOperations: [],
       };
     },
     computed: {
-      operations() {
-        return this.$store.state.operations;
+      operationsToShow() {
+        this.$data.deepCloneOperations = _.cloneDeep(this.operations);
+        return this.mapToValues(this.$data.deepCloneOperations);
       },
     },
     methods: {
-      ...mapMutations([
-        'setOperationsSortedBy',
-      ]),
-      ...mapActions([
-        'getOperations',
-      ]),
-      mapIdsToStrings(operations) {
+      mapToValues(operations) {
         /* eslint-disable no-param-reassign */
-        const operationsMapped = operations.map((item) => {
+        let newArray = operations.map((item) => {
+          console.log(item);
+          item.ready = true;
           item.date = new Date(item.date.year, item.date.month, item.date.day);
           item.type = this.$data.types[item.type];
-          if (item.type == null) item.type = 'Неизвестная операция';
           item.assessment = this.$data.assessments[item.assessment];
+          if (item.type == null) item.type = 'Неизвестная операция';
           if (item.assessment == null) item.assessment = this.$data.assessments[3];
           return item;
         });
-        return operationsMapped;
+        return newArray;
       },
       getFormattedDate(date) {
-        return date.toLocaleString('ru-RU', { year: 'numeric', day: '2-digit', month: 'short' }).toUpperCase().replace(new RegExp('\\.|Г.', 'g'), '');
+        return date.toLocaleString('ru-RU', {
+          year: 'numeric',
+          day: '2-digit',
+          month: 'short'
+        }).toUpperCase().replace(new RegExp('\\.|Г.', 'g'), '');
       },
     },
   };
@@ -94,8 +105,9 @@
 <style lang="scss" scoped>
     .container-operations {
         background: #FFFFFF;
-        box-shadow: 0 0 20px 0 rgba(0,0,0,0.20);
+        box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.20);
     }
+
     .operations {
         &__toggle {
             display: flex;

@@ -3,16 +3,17 @@
         <div class="container container-operations">
             <h2 class="">Операции на поле 112</h2>
             <div class="operations__toggle">
-                <div class="operations__toggle__item">Запланированные операции</div>
-                <div class="operations__toggle__item">Выполненные операции</div>
+                <div class="operations__toggle__item" v-on:click="toggleOperationsType('planned')">Запланированные операции</div>
+                <div class="operations__toggle__item" v-on:click="toggleOperationsType('done')">Выполненные операции</div>
             </div>
-            <v-operations-table v-bind:operations="doneOperations"></v-operations-table>
+            <v-operations-table v-if="isPlannedShown" :operations="plannedOperations"></v-operations-table>
+            <v-operations-table v-else :operations="doneOperations"></v-operations-table>
         </div>
     </section>
 </template>
 
 <script>
-  import { mapMutations, mapActions } from 'vuex';
+  import { mapMutations, mapActions, mapGetters } from 'vuex';
   import OperationsTable from './OperationsTable';
 
   export default {
@@ -22,6 +23,11 @@
     },
     created() {
       this.getOperations();
+    },
+    data() {
+      return {
+        isPlannedShown: true,
+      };
     },
     computed: {
       doneOperations() {
@@ -41,6 +47,14 @@
       ...mapActions([
         'getOperations',
       ]),
+      // ...mapGetters([
+      //   'plannedOperations',
+      //   'doneOperations',
+      // ]),
+      toggleOperationsType(toggleTo) {
+        toggleTo === 'planned' && !this.isPlannedShown ? this.isPlannedShown = !this.isPlannedShown : '';
+        toggleTo === 'done' && this.isPlannedShown ? this.isPlannedShown = !this.isPlannedShown : '';
+      },
     },
   };
 </script>
