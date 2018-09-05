@@ -13,7 +13,7 @@ export default class FieldService {
         new Operation({
             id: 'f112-o1',
             type: OperationType.FERTILIZATION,
-            date: { year: 2018, month: 3, day: 14 },
+            date: { year: 2018, month: 8, day: 3 },
             area: 47.8,
             comment: 'Все прошло нормально',
             assessment: Assessment.SATISFACTORILY
@@ -21,7 +21,7 @@ export default class FieldService {
         new Operation({
             id: 'f112-o2',
             type: OperationType.RIGGING,
-            date: { year: 2018, month: 3, day: 17 },
+            date: { year: 2018, month: 8, day: 22 },
             area: 47.5,
             comment: null,
             assessment: Assessment.BADLY
@@ -29,7 +29,7 @@ export default class FieldService {
         new Operation({
             id: 'f112-o3',
             type: OperationType.BOWLING,
-            date: { year: 2018, month: 3, day: 26 },
+            date: { year: 2018, month: 9, day: 13 },
             area: 48.2,
             comment: null,
             assessment: null
@@ -37,7 +37,7 @@ export default class FieldService {
         new Operation({
             id: 'f112-o4',
             type: OperationType.WATERING,
-            date: { year: 2018, month: 4, day: 2 },
+            date: { year: 2018, month: 10, day: 6 },
             area: 48.1,
             comment: 'Знатно полили',
             assessment: Assessment.EXCELLENT
@@ -45,7 +45,7 @@ export default class FieldService {
         new Operation({
             id: 'f112-o5',
             type: OperationType.HARVESTING,
-            date: { year: 2018, month: 6, day: 20 },
+            date: { year: 2018, month: 11, day: 17 },
             area: 48.0,
             comment: null,
             assessment: null
