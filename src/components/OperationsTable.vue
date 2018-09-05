@@ -1,6 +1,7 @@
 <template>
 
     <table class="operations__table" cellspacing="0">
+        {{ operationsSortedBy }}
         <!--<tr>-->
         <!--<th v-on:click="setOperationsSortedBy('date')">Дата</th>-->
         <!--<th v-on:click="setOperationsSortedBy('type')">Операция</th>-->
@@ -8,36 +9,37 @@
         <!--<th v-on:click="setOperationsSortedBy('assessment')">Качество</th>-->
         <!--</tr>-->
         <tr>
-            <th>Дата</th>
-            <th>Операция</th>
-            <th>Площадь</th>
-            <th>Качество</th>
+            <th v-on:click="setOperationsSortedBy({type: 'date', isIncremental: !operationsSortedBy.isIncremental})">Дата</th>
+            <th v-on:click="setOperationsSortedBy({type: 'type', isIncremental: !operationsSortedBy.isIncremental})">Операция</th>
+            <th v-on:click="setOperationsSortedBy({type: 'area', isIncremental: !operationsSortedBy.isIncremental})">Площадь</th>
+            <th v-on:click="setOperationsSortedBy({type: 'assessment', isIncremental: !operationsSortedBy.isIncremental})">Качество</th>
         </tr>
         <tr v-for="operation in operationsToShow" v-bind:key="operation.id">
             <td>{{ getFormattedDate(operation.date) }}</td>
             <td>{{ operation.type }}</td>
             <td>{{ operation.area }}</td>
             <td class="assessment-red"
-            v-if="operation.assessment.toLowerCase() === 'плохо'">
-            {{ operation.assessment }}
+                v-if="operation.assessment.toLowerCase() === 'плохо'">
+                {{ operation.assessment }}
             </td>
             <td class="assessment-yellow"
-            v-else-if="operation.assessment.toLowerCase() === 'удволетворительно'">
-            {{ operation.assessment }}
+                v-else-if="operation.assessment.toLowerCase() === 'удволетворительно'">
+                {{ operation.assessment }}
             </td>
             <td class="assessment-green"
-            v-else-if="operation.assessment.toLowerCase() === 'отлично'">
-            {{ operation.assessment }}
+                v-else-if="operation.assessment.toLowerCase() === 'отлично'">
+                {{ operation.assessment }}
             </td>
             <td class="assessment-gray"
-            v-else-if="operation.assessment.toLowerCase() === 'нет оценки'">
-            {{ operation.assessment }}
+                v-else-if="operation.assessment.toLowerCase() === 'нет оценки'">
+                {{ operation.assessment }}
             </td>
         </tr>
     </table>
 </template>
 
 <script>
+  import { mapMutations } from 'vuex';
   import _ from "lodash";
 
   export default {
@@ -61,21 +63,54 @@
           2: 'Отлично',
           3: 'Нет оценки',
         },
-        deepCloneOperations: [],
+        deepClonedOperations: [],
       };
     },
     computed: {
       operationsToShow() {
-        this.$data.deepCloneOperations = _.cloneDeep(this.operations);
-        return this.mapToValues(this.$data.deepCloneOperations);
+        this.$data.deepClonedOperations = _.cloneDeep(this.operations);
+        this.mapToValues(this.$data.deepClonedOperations);
+        console.log(this.$data.deepClonedOperations);
+
+        this.$data.deepClonedOperations.sort((a, b) => {
+          let sortType = this.$store.state.operations.sortBy.type.toLowerCase();
+          let isIncremental = this.$store.state.operations.sortBy.isIncremental;
+          function moreOrLess(sortBy, isIncremental) {
+            if (isIncremental) return a[sortBy] < b[sortBy];
+            if (!isIncremental) return a[sortBy] > b[sortBy];
+          }
+
+          switch (sortType.toLowerCase()) {
+            case 'date':
+              return moreOrLess('date', isIncremental);
+            case 'type':
+              return moreOrLess('type', isIncremental);
+            case 'area':
+              return moreOrLess('area', isIncremental);
+            case 'assessment':
+              return moreOrLess('assessment', isIncremental);
+            default:
+              return moreOrLess('date', isIncremental);
+          }
+        });
+        return this.$data.deepClonedOperations;
       },
+      operationsSortedBy() {
+        console.log(this.$store.state.operations.sortBy);
+        return this.$store.state.operations.sortBy;
+      },
+      // sortedOperations() {
+      //   let newArray = this.operationsToShow();
+      //   return 1;
+      // },
     },
     methods: {
+      ...mapMutations([
+        'setOperationsSortedBy',
+      ]),
       mapToValues(operations) {
         /* eslint-disable no-param-reassign */
-        let newArray = operations.map((item) => {
-          console.log(item);
-          item.ready = true;
+        return operations.map((item) => {
           item.date = new Date(item.date.year, item.date.month, item.date.day);
           item.type = this.$data.types[item.type];
           item.assessment = this.$data.assessments[item.assessment];
@@ -84,7 +119,6 @@
           if (item.assessment == null) item.assessment = this.$data.assessments[3];
           return item;
         });
-        return newArray;
       },
       getFormattedDate(date) {
         return date.toLocaleString('ru-RU', {

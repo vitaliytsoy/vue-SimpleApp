@@ -12,7 +12,7 @@ export default new Vuex.Store({
             planned: [] as object[],
             sortBy: {
                 type: 'date',
-                isIncremental: true,
+                isIncremental: false,
 
             },
         },
