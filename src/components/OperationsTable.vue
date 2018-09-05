@@ -254,13 +254,16 @@
                         }
                     }
                     &:nth-child(4) {
+                        padding: 20px 15px 20px 30px;
                         &:before {
                             content: '';
                             display: inline-block;
                             width: 25px;
                             height: 15px;
-                            position: relative;
-                            top: 3px;
+                            position: absolute;
+                            top: 50%;
+                            left: 0;
+                            transform: translateY(-50%);
                             margin-right: 10px;
                             border-radius: 10px;
                             background: #66CC66;
