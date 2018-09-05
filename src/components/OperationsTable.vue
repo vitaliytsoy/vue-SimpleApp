@@ -1,18 +1,11 @@
 <template>
 
     <table class="operations__table" cellspacing="0">
-        {{ operationsSortedBy }}
-        <!--<tr>-->
-        <!--<th v-on:click="setOperationsSortedBy('date')">Дата</th>-->
-        <!--<th v-on:click="setOperationsSortedBy('type')">Операция</th>-->
-        <!--<th v-on:click="setOperationsSortedBy('area')">Площадь</th>-->
-        <!--<th v-on:click="setOperationsSortedBy('assessment')">Качество</th>-->
-        <!--</tr>-->
-        <tr>
-            <th v-on:click="setOperationsSortedBy('date')">Дата</th>
-            <th v-on:click="setOperationsSortedBy('type')">Операция</th>
-            <th v-on:click="setOperationsSortedBy('area')">Площадь</th>
-            <th v-on:click="setOperationsSortedBy('assessment')">Качество</th>
+        <tr v-bind:class="[operationsSortedBy.type, operationsSortedBy.isIncremental ? 'up' : 'down']">
+            <th v-on:click="setSortType('date')">Дата</th>
+            <th v-on:click="setSortType('type')">Операция</th>
+            <th v-on:click="setSortType('area')">Площадь</th>
+            <th v-on:click="setSortType('assessment')">Качество</th>
         </tr>
         <tr v-for="operation in operationsToShow" v-bind:key="operation.id">
             <td>{{ getFormattedDate(operation.date) }}</td>
@@ -39,12 +32,12 @@
 </template>
 
 <script>
-  import { mapMutations } from 'vuex';
   import _ from 'lodash';
 
   export default {
     props: {
       operations: Array,
+      setSortType: Function,
     },
     name: 'OperationsTable',
     data() {
@@ -92,14 +85,10 @@
         return deepClonedOperations;
       },
       operationsSortedBy() {
-        console.log(this.$store.state.operations.sortBy);
         return this.$store.state.operations.sortBy;
       },
     },
     methods: {
-      ...mapMutations([
-        'setOperationsSortedBy',
-      ]),
       mapToValues(operations) {
         /* eslint-disable no-param-reassign */
         return operations.map((item) => {
@@ -124,24 +113,7 @@
 </script>
 
 <style lang="scss" scoped>
-    .container-operations {
-        background: #FFFFFF;
-        box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.20);
-    }
-
     .operations {
-        &__toggle {
-            display: flex;
-            flex-flow: row wrap;
-            text-transform: uppercase;
-            font-size: 12px;
-            margin-top: 40px;
-            &__item {
-                &:not(:first-child) {
-                    padding-left: 30px;
-                }
-            }
-        }
         &__table {
             width: 96%;
             margin: 30px 0 20px 0;
@@ -158,10 +130,54 @@
                 &:first-child {
                     background: #EDEEEE;
                     font-size: 13px;
+                    &.date {
+                        &.up {
+                            th:nth-child(1):after{
+                                transform: rotate(180deg);
+                            }
+                        }
+                        th:nth-child(1):after{
+                            border-top: 5px solid #3399FF;
+                        }
+                    }
+                    &.type {
+                        &.up {
+                            th:nth-child(2):after{
+                                transform: rotate(180deg);
+                            }
+                        }
+                        th:nth-child(2):after{
+                            border-top: 5px solid #3399FF;
+                        }
+                    }
+                    &.area {
+                        &.up {
+                            th:nth-child(3):after{
+                                transform: rotate(180deg);
+                            }
+                        }
+                        th:nth-child(3):after{
+                            border-top: 5px solid #3399FF;
+                        }
+                    }
+                    &.assessment {
+                        &.up {
+                            th:nth-child(4):after{
+                                transform: rotate(180deg);
+                            }
+                        }
+                        th:nth-child(4):after{
+                            border-top: 5px solid #3399FF;
+                        }
+                    }
                     th {
                         text-align: left;
                         padding: 15px 15px;
                         cursor: pointer;
+                        &:after {
+                            transition: transform 0.35s ease;
+                            transform-origin: 50% 50%;
+                        }
                         &:nth-child(1) {
                             width: 12%;
                             &:after {
@@ -172,7 +188,7 @@
                                 margin: 0 0 2px 5px;
                                 border-left: 5px solid transparent;
                                 border-right: 5px solid transparent;
-                                border-top: 5px solid #3399FF;
+                                border-top: 5px solid #A7A9AC;
                             }
                         }
                         &:nth-child(2) {
@@ -248,12 +264,6 @@
                             margin-right: 10px;
                             border-radius: 10px;
                             background: #66CC66;
-                        }
-                        .green {
-
-                        }
-                        .red {
-
                         }
                     }
                     &.assessment {

@@ -16,8 +16,14 @@
                     Выполненные операции
                 </div>
             </div>
-            <v-operations-table v-if="isPlannedShown" :operations="plannedOperations"></v-operations-table>
-            <v-operations-table v-else :operations="doneOperations"></v-operations-table>
+            <v-operations-table v-if="isPlannedShown"
+                                :operations="plannedOperations"
+                                :setSortType="setOperationsSortedBy">
+            </v-operations-table>
+            <v-operations-table v-else
+                                :operations="doneOperations"
+                                :setSortType="setOperationsSortedBy">
+            </v-operations-table>
         </div>
     </section>
 </template>
@@ -78,6 +84,7 @@
             font-size: 12px;
             margin-top: 40px;
             &__item {
+                cursor: pointer;
                 &.isActive {
                     color: #3399FF;
                 }
