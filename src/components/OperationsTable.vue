@@ -23,22 +23,22 @@
             <td>{{ getFormattedDate(operation.date) }}</td>
             <td>{{ operation.type }}</td>
             <td>{{ operation.area }}</td>
-            <!--<td class="assessment-red"-->
-            <!--v-if="operation.assessment.toLowerCase() === 'плохо'">-->
-            <!--{{ operation.assessment }}-->
-            <!--</td>-->
-            <!--<td class="assessment-yellow"-->
-            <!--v-else-if="operation.assessment.toLowerCase() === 'удволетворительно'">-->
-            <!--{{ operation.assessment }}-->
-            <!--</td>-->
-            <!--<td class="assessment-green"-->
-            <!--v-else-if="operation.assessment.toLowerCase() === 'отлично'">-->
-            <!--{{ operation.assessment }}-->
-            <!--</td>-->
-            <!--<td class="assessment-gray"-->
-            <!--v-else-if="operation.assessment.toLowerCase() === 'нет оценки'">-->
-            <!--{{ operation.assessment }}-->
-            <!--</td>-->
+            <td class="assessment-red"
+            v-if="operation.assessment.toLowerCase() === 'плохо'">
+            {{ operation.assessment }}
+            </td>
+            <td class="assessment-yellow"
+            v-else-if="operation.assessment.toLowerCase() === 'удволетворительно'">
+            {{ operation.assessment }}
+            </td>
+            <td class="assessment-green"
+            v-else-if="operation.assessment.toLowerCase() === 'отлично'">
+            {{ operation.assessment }}
+            </td>
+            <td class="assessment-gray"
+            v-else-if="operation.assessment.toLowerCase() === 'нет оценки'">
+            {{ operation.assessment }}
+            </td>
         </tr>
     </table>
 </template>
